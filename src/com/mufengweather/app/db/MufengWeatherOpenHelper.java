@@ -19,11 +19,9 @@ public class MufengWeatherOpenHelper extends SQLiteOpenHelper {
 	public static final String CREATE_CITY = "create table City("
 			+ "id integer primary key autoincrement," + "city_name text,"
 			+ "city_code text," + "province_id integer)";
-	public static final String CREATE_COUNTY="create table County(" +
-			"id integer primary key autoincrement," +
-			"county_name text," +
-			"county_code text," +
-			"city_id integer)";
+	public static final String CREATE_COUNTY = "create table County("
+			+ "id integer primary key autoincrement," + "county_name text,"
+			+ "county_code text," + "city_id integer)";
 
 	public MufengWeatherOpenHelper(Context context, String name,
 			CursorFactory factory, int version) {
@@ -32,10 +30,9 @@ public class MufengWeatherOpenHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(CREATE_PROVINCE);//创建Province（省）表
-		db.execSQL(CREATE_CITY);//创建City（市）表
-		db.execSQL(CREATE_COUNTY);//创建County（县）表
-		
+		db.execSQL(CREATE_PROVINCE);// 创建Province（省）表
+		db.execSQL(CREATE_CITY);// 创建City（市）表
+		db.execSQL(CREATE_COUNTY);// 创建County（县）表
 
 	}
 
