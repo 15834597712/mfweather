@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mufengweather.app.R;
+import com.mufengweather.app.service.AutoUpdateService;
 import com.mufengweather.app.util.HttpCallbackListener;
 import com.mufengweather.app.util.HttpUtil;
 import com.mufengweather.app.util.Utility;
@@ -184,6 +185,8 @@ private void showWeather() {
 	currentDateText.setText(prefs.getString("current_date",""));
 	weatherInfoLayout.setVisibility(View.VISIBLE);
 	cityNameText.setVisibility(View.VISIBLE);
+	Intent intent = new Intent(this, AutoUpdateService.class);
+	startService(intent);
 }
 
 
