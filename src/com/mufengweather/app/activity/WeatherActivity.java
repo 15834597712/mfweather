@@ -1,10 +1,12 @@
 package com.mufengweather.app.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -64,8 +66,8 @@ public class WeatherActivity extends Activity implements OnClickListener {
 	    temp1Text = (TextView) findViewById(R.id.temp2);
 	    temp2Text = (TextView) findViewById(R.id.temp1);
 	    currentDateText = (TextView) findViewById(R.id.current_date);
-	    //switchCity = (Button) findViewById(R.id.swich_city);
-	    //refreshWerther= (Button) findViewById(R.id.refresh_werther);
+	    switchCity = (Button) findViewById(R.id.switch_city);
+	    refreshWerther= (Button) findViewById(R.id.refresh_weather);
 	    String countyCode = getIntent().getStringExtra("county_code");
 	    if(!TextUtils.isEmpty(countyCode)){
 	    	//有县级代号时就去查询天气
@@ -78,31 +80,32 @@ public class WeatherActivity extends Activity implements OnClickListener {
 	    	//没有县级代号时就直接显示本地天气
 	    	showWeather();
 	    }
-	   // switchCity.setOnClickListener(this);
-	   // refreshWerther.setOnClickListener(this);
+	    switchCity.setOnClickListener(this);
+	    refreshWerther.setOnClickListener(this);
   }
   
   
  @Override
 	public void onClick(View v) {
-	 /*  switch(v.getId()){
-	  case R.id.switch_city:
-	  		Intent intent = new Intent(this, ChooseAreaActivity.class);
-	  		intent.putExtra("from_weather_activity", true);
-	  		startActivity(intent);
-	  		finish();
-	  		break;
-	  case R.id.refresh_weather:
-		  publishText.setText("同步中...");
-		  SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		  String weatherCode = prefs.getString("weather_code", "");
-		  if(!TextUtils.isEmpty(weatherCode)){
-			  queryWeatherInfo(weatherCode);
-		  }
-		  break;
-		  default :
-			  break;
-	  }*/
+	 switch(v.getId()){
+	 case R.id.switch_city:
+		 Intent intent = new Intent(this, ChooseAreaActivity.class);
+		 intent.putExtra("from_weather_activity", true);
+		 startActivity(intent);
+		 finish();
+		 break;
+	 case R.id.refresh_weather:
+		 publishText.setText("同步中...");
+		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		 String weatherCode = prefs.getString("weather_code", "");
+		 if (!TextUtils.isEmpty(weatherCode)) {
+			 queryWeatherInfo(weatherCode);
+		 }
+		 break;
+	 default:
+		 break;
+	 }
+	 
 	}
 	/**
 	 * 查询县级代号所对应的天气代号。
@@ -114,16 +117,15 @@ private void queryWeatherCode(String countyCode){
 
 /**
  * 查询天气代号所对应的天气。
+ * 	error ： 原因		String address = "http://www.weather.com.cn/data/cityinfo/" + weatherCode + ".html";
+	String address = "http://www.weather.com.cn/adat/cityinfo/" + weatherCode + ".html";
+	原网站发生变化二次访问服务器没有转变地址。
  */                           
-private void queryWeatherInfo(String weatherCode){
-	String address = "http://www.weather.com.cn/data/cityinfo/"+weatherCode+".html";
-
-	queryFromServer(address,"weatherCode");				
-			
-	
+private void queryWeatherInfo(String weatherCode) {
+		String address = "http://www.weather.com.cn/adat/cityinfo/" + weatherCode + ".html";
+		queryFromServer(address, "weatherCode");	
 		
-
-	  	
+	
 
 }
 
@@ -158,9 +160,11 @@ private void queryFromServer(final String address, final String type) {
 		
 		@Override
 		public void onError(Exception e) {
+			Log.d("tag", e.getMessage());
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
+				
 					publishText.setText("同步失败");
 				}
 			});

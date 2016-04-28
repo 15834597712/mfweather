@@ -5,6 +5,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import android.util.Log;
+
 /**
  * 网络请求封装 sendHttpRequest(final String address,final HttpCallbackListener listener)
  * 为什么用HttpCallbackListener 因为服务器响应是需要时间的所以有可能引起主线程的阻塞 所以在send方法中开了一个子线程 由于耗时逻辑都是
@@ -12,9 +15,9 @@ import java.net.URL;
  * 就是HttpCallbackListener。
  */
 public class HttpUtil {
-	public static void sendHttpRequest(final String address,final 
-			HttpCallbackListener listener){
-		new Thread(new Runnable(){
+	public static void sendHttpRequest(final String address,
+			final HttpCallbackListener listener) {
+		new Thread(new Runnable() {
 			@Override
 			public void run(){
 				HttpURLConnection connection = null;
@@ -22,8 +25,8 @@ public class HttpUtil {
 					URL url = new URL(address);
 					connection=(HttpURLConnection) url.openConnection();
 					connection.setRequestMethod("GET");
-					connection.setConnectTimeout(8000);
-					connection.setReadTimeout(8000);
+					connection.setConnectTimeout(10000);
+					connection.setReadTimeout(10000);
 					InputStream in = connection.getInputStream();
 					BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 					StringBuilder response = new StringBuilder();
@@ -40,6 +43,8 @@ public class HttpUtil {
 					if(listener != null){
 						//回调onError方法
 						listener.onError(e);
+						Log.d("couwu",e.getMessage() );
+						
 					} 
 			   }finally{
 				   if(connection != null){

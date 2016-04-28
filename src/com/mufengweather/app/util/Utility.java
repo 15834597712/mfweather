@@ -112,13 +112,6 @@ public class Utility {
         
         /**
          * 将服务器返回的所有天气信息存储到SharedPreferences文件中。
-         * @param context
-         * @param cityName
-         * @param weatherCode
-         * @param temp1
-         * @param temp2
-         * @param weatherDesp
-         * @param publishTime
          */
         public static void saveWeatherInfo(Context context , String cityName, String weatherCode ,
         		String temp1 , String temp2 ,String weatherDesp ,String publishTime){
